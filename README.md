@@ -66,6 +66,14 @@ Creare un meccanismo che filtri il testo prima di salvarlo e per essere sicuri a
 - Creato e sviluppato un codice che simuli un attacco al sito, lo stesso attacco è andato a buon fine in quanto si è registrato un rallentamento generale del sito per poi arrivare a un blocco completo.
 Per fare ciò abbiamo inserito nel terminale il comando "chmod +x dos.sh ./dos.sh" che provoca un rallentamento del caricamento del sito.
 - Abbiamo mitigato l'attacco informatico inserendo la funzione "RateLimiter" sia per la stringa 'global' che per la stringa 'articlesearch'.
-Poi abbiamo incluso il blocco temporneo ID response "function () 
+Poi abbiamo incluso il blocco temporneo ID con la funzione "response function () 
         return response('Troppe richieste di ricerca.', 429);"
+
+
+2° Challenge:
+-  set-Admin 
+-  set-writer 
+-  set-revisor 
+Abbiamo modificato le rotte 'get' in 'rotte 'patch'  Esempio: Route::patch('/admin/{user}/set-admin', [AdminController::class, 'setAdmin'])->name('admin.setAdmin');
+   
 

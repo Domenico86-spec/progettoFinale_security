@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
         // Aggiunto per limitare le richieste
 
         RateLimiter::for('global', function (Request $request) {
-        return Limit::perMinute(10)->by($request->ip())->response(function () {
+        return Limit::perMinute(5)->by($request->ip())->response(function () {
         return response('Troppe richieste di ricerca.', 429);
 
             });
