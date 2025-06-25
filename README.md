@@ -60,3 +60,12 @@ Supponiamo che ci sia una misconfiguration a livello di CORS (config/cors.php) c
 Creare un meccanismo che filtri il testo prima di salvarlo e per essere sicuri anche in fase di visualizzazione dell'articolo.
 
 # progettoFinale_security
+
+
+1° Challenge:
+- Creato e sviluppato un codice che simuli un attacco al sito, lo stesso attacco è andato a buon fine in quanto si è registrato un rallentamento generale del sito per poi arrivare a un blocco completo.
+Per fare ciò abbiamo inserito nel terminale il comando "chmod +x dos.sh ./dos.sh" che provoca un rallentamento del caricamento del sito.
+- Abbiamo mitigato l'attacco informatico inserendo la funzione "RateLimiter" sia per la stringa 'global' che per la stringa 'articlesearch'.
+Poi abbiamo incluso il blocco temporneo ID response "function () 
+        return response('Troppe richieste di ricerca.', 429);"
+
