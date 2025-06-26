@@ -2,16 +2,17 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Laravel\Fortify\Fortify;
+use Illuminate\Support\Facades\Log;
 use App\Actions\Fortify\CreateNewUser;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Cache\RateLimiting\Limit;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
-use Laravel\Fortify\Fortify;
+use App\Actions\Fortify\UpdateUserProfileInformation;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -43,11 +44,27 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
-        Fortify::loginView(function () {
+        Fortify::loginView(function (Request $request) {
+
+            Log::info('Login effettuato', [
+                        'email' => $request->email,
+                        'ip' => request()->ip(),
+                        'timestamp' => now()->toDateTimeString(),
+
+                    ]);
             return view('auth.login');
+
+            
+
         });
 
-        Fortify::registerView(function () {
+        Fortify::registerView(function (Request $request) {
+
+            Log::info('Registrazione effettuata', [
+                        'email' => $request->email,
+                        'ip' => request()->ip(),
+                        'timestamp' => now()->toDateTimeString(),
+            ]);
             return view('auth.register');
         });
     }

@@ -36,6 +36,17 @@ class ArticleController extends Controller implements HasMiddleware
      */
     public function create()
     {
+        
+
+
+            Log::info('Articolo Creato', [
+                'email' => Auth::user()->email,
+                'ip' => request()->ip(),
+                'timestamp' => now()->toDateTimeString(),
+            ]);
+
+
+            //  $this->logAction('Articolo Creato');
         return view('articles.create');
     }
 
@@ -76,6 +87,15 @@ class ArticleController extends Controller implements HasMiddleware
             $article->tags()->attach($newTag);
         }
 
+       
+       
+        Log::info('Articolo modificato', [
+                'email' => Auth::user()->email,
+                'ip' => request()->ip(),
+                'timestamp' => now()->toDateTimeString(),
+            ]);
+
+       
         return redirect(route('homepage'))->with('message', 'Articolo creato con successo');
     }
 
@@ -155,6 +175,15 @@ class ArticleController extends Controller implements HasMiddleware
             $article->tags()->detach($tag);
         }
         $article->delete();
+        
+        
+         Log::info('Articolo Cancellato', [
+                'email' => Auth::user()->email,
+                'ip' => request()->ip(),
+                'timestamp' => now()->toDateTimeString(),
+            ]);
+
+        
         
         return redirect()->back()->with('message', 'Articolo cancellato con successo');
     }
