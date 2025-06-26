@@ -75,5 +75,57 @@ Poi abbiamo incluso il blocco temporneo ID con la funzione "response function ()
 -  set-writer 
 -  set-revisor 
 Abbiamo modificato le rotte 'get' in 'rotte 'patch'  Esempio: Route::patch('/admin/{user}/set-admin', [AdminController::class, 'setAdmin'])->name('admin.setAdmin');
+
+3° Challenge:
+
+Abbiamo implementato i "Log"  per le seguenti operazioni che possono essere oggetto di attacco informatico:
+
+Inseriti i Log per il login e la password all'interno di Fortify.
+
+ Fortify::loginView(function (Request $request) {
+
+            Log::info('Login effettuato', [
+                        'email' => $request->email,
+                        'ip' => request()->ip(),
+                        'timestamp' => now()->toDateTimeString(),
+
+                    ]);
+            return view('auth.login');
+
+            
+
+        });
+
+        Fortify::registerView(function (Request $request) {
+
+            Log::info('Registrazione effettuata', [
+                        'email' => $request->email,
+                        'ip' => request()->ip(),
+                        'timestamp' => now()->toDateTimeString(),
+            ]);
+            return view('auth.register');
+        });
+
+Implementato il "LogUser" , "LogUserRegistered" e il "LogUserlogout" all'interno di "EventServiceProvider".
+Implementato la funzione: public function handle( Logout $event): void
+    {
+         Log::debug('Evento Logout ricevuto');
+
+        Log::info('Logout effettuato', [
+            'email' => $event->user->email,
+            'ip' => request()->ip(),
+            'timestamp' => now()->toDateTimeString(),
+        ]);
+    }; Questa funzione è stata inserita all'interno di "LogUserLOgOut".
+
+Implementato il "Log" per l'articolo creato, l'articolo modificato e l'articolo da cancellare all'interno della funzione "ArticleController".
+Implementato il "Loginfo" per il ruolo di "Admin" all'interno della funzione:
+ - public function setAdmin(User $user).
+
+Il "Loginfo" per il ruolo di "revisor" all'interno della funzione:
+- public function setRevisor(User $user).
+
+Il "Loginfo" per il ruolo di "writer" all'interno della funzione:
+- public function setWriter(User $user).
    
 
