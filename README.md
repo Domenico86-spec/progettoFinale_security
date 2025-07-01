@@ -127,5 +127,21 @@ Il "Loginfo" per il ruolo di "revisor" all'interno della funzione:
 
 Il "Loginfo" per il ruolo di "writer" all'interno della funzione:
 - public function setWriter(User $user).
+
+
+4°Challenge:
+
+-Implementato la funzione "Protected" 
+ "protected $apis = [
+        'it' => 'https://newsapi.org/v2/top-headlines?country=it&apiKey=5fbe92849d5648eabcbe072a1cf91473',
+        'gb' => 'https://newsapi.org/v2/top-headlines?country=gb&apiKey=5fbe92849d5648eabcbe072a1cf91473',
+        'us' => 'https://newsapi.org/v2/top-headlines?country=us&apiKey=5fbe92849d5648eabcbe072a1cf91473',
+    ];"
+- Per simulare l'attacco abbiamo sostituito uno dei tre link con questo "<option selected value="http://internal.finance:8001/user-data.php">NewsAPI - IT</option>" con lo scopo di trovare dati sensibili (es:token).
+- Cambiato il form all'interno del file "latest-news.blade.php" per migliorare la funzionalità e la validazione degli input.
+- All'interno di "HttpService.php" abbiamo inserito questa funzione " if (!Auth::user()->hasRole('admin')) {
+            return 'Accesso negato';
+}" per evitare l'accesso a un utente che abbia intenzioni malevoli.
+
    
 

@@ -32,6 +32,14 @@ class HttpService
             return 'Domain not allowed';
         }
 
+        {
+        // Mitigazione: verifica 
+
+        if (!Auth::user()->hasRole('admin')) {
+            return 'Accesso negato';
+        }
+         $parsedUrl = parse_url($url);
+
         // Aggiungi l'intestazione Referer per le richieste al server locale
         $options['headers'] = ['Referer' => $this->refererHeader];
 
@@ -42,4 +50,5 @@ class HttpService
             return 'Something went wrong: ' . $e->getMessage();
         }
     }
+}
 }

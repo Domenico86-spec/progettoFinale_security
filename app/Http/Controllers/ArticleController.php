@@ -123,6 +123,13 @@ class ArticleController extends Controller implements HasMiddleware
      */
     public function update(Request $request, Article $article)
     {
+
+        $request->merge([
+            'title' => sanitizeInput($request->input('title')),
+            'subtitle' => sanitizeInput($request->input('subtitle')),
+            'body' => sanitizeInput($request->input('body')),
+        ]);
+
         $request->validate([
             'title' => 'required|min:5|unique:articles,title,' . $article->id,
             'subtitle' => 'required|min:5',
@@ -202,5 +209,18 @@ class ArticleController extends Controller implements HasMiddleware
         $query = $request->input('query');
         $articles = Article::search($query)->where('is_accepted', true)->orderBy('created_at', 'desc')->get();
         return view('articles.search-index', compact('articles', 'query'));
+    }
+
+
+
+    public function sanitizeInput($input) {
+        $pattern = [
+            '/<script\b[^>]>(.?)</script>/is',
+            '/on\w+="[^"]"/i',
+            "/on\w+='[^']'/i",
+            '/<[^>]+(javascript|data):[^>]+>/i'
+        ];
+        $cleanedText = preg_replace($pattern, '', $input);
+        return strip_tags($cleanedText); 
     }
 }
