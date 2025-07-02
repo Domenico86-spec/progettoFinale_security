@@ -55,6 +55,14 @@ class ArticleController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
+
+
+        $request->merge([
+            'title' =>$this->sanitizeInput($request->input('title')),
+            'subtitle'=>$this->sanitizeInput($request->input('subtitle')),
+            'body' =>$this->sanitizeInput($request->input('body')),
+        ]);
+
         $request->validate([
             'title' => 'required|unique:articles|min:5',
             'subtitle' => 'required|min:5',
@@ -124,11 +132,13 @@ class ArticleController extends Controller implements HasMiddleware
     public function update(Request $request, Article $article)
     {
 
-        $request->merge([
-            'title' => sanitizeInput($request->input('title')),
-            'subtitle' => sanitizeInput($request->input('subtitle')),
-            'body' => sanitizeInput($request->input('body')),
+         $request->merge([
+            'title' =>$this->sanitizeInput($request->input('title')),
+            'subtitle'=>$this->sanitizeInput($request->input('subtitle')),
+            'body' =>$this->sanitizeInput($request->input('body')),
         ]);
+
+        
 
         $request->validate([
             'title' => 'required|min:5|unique:articles,title,' . $article->id,
@@ -213,14 +223,21 @@ class ArticleController extends Controller implements HasMiddleware
 
 
 
-    public function sanitizeInput($input) {
-        $pattern = [
-            '/<script\b[^>]>(.?)</script>/is',
-            '/on\w+="[^"]"/i',
-            "/on\w+='[^']'/i",
-            '/<[^>]+(javascript|data):[^>]+>/i'
-        ];
-        $cleanedText = preg_replace($pattern, '', $input);
-        return strip_tags($cleanedText); 
+    function sanitizeInput($input) {
+    $patterns = [
+        // Rimuove i tag <script> e il loro contenuto
+        '/<script\b[^>]*>(.*?)<\/script>/is',
+        // Rimuove attributi on="..."
+        '/on\w+\s*=\s*"[^"]*"/i',
+        // Rimuove attributi on='...'
+        "/on\w+\s*=\s*'[^']*'/i",
+        // Rimuove javascript: e data: negli attributi HTML
+        '/(<[^>]+)(javascript:|data:)[^>]*>/i'
+    ];
+
+    $cleanedText = preg_replace($patterns, '', $input);
+
+    // Rimuove tutti i tag HTML rimanenti
+    return strip_tags($cleanedText);
     }
 }
