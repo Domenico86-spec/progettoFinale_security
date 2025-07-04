@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\WriterController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RevisorController;
 
 // Public routes
@@ -50,3 +51,11 @@ Route::middleware(['admin','admin.local'])->group(function(){
     Route::post('/admin/category/store', [AdminController::class, 'storeCategory'])->name('admin.storeCategory');
     Route::post('/admin/tag/store', [AdminController::class, 'storeTag'])->name('admin.storeTag');
 });
+
+    Route::middleware('auth')->group (function(){
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    });
+        
+
+    

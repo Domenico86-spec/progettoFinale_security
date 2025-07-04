@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Exception\RequestException;
 
 class HttpService
